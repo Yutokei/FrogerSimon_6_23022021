@@ -10,7 +10,7 @@ const Sauce = require('./models/Sauce');
 
 const app = express();
 
-mongoose.connect('mongodb+srv://SimonF:AGLa1DqDzz1l5Wk9@clustersopekocko.nh6ea.mongodb.net/ClusterSoPekocko?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://SimonF:x7HhcuM2fT5oFLGA@clustersopekocko.nh6ea.mongodb.net/ClusterSoPekocko?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
