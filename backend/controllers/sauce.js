@@ -44,11 +44,11 @@ exports.modifySauce = (req, res, next) => {
 
 //Supprimer une sauce
 exports.deleteSauce = (req, res, next) => {
-  Sauces.findOne({ _id: req.params.id })
+  Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
       const filename = sauce.imageUrl.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {
-        Sauces.deleteOne({ _id: req.params.id })
+        Sauce.deleteOne({ _id: req.params.id })
           .then(() => res.status(200).json({ message: 'Sauce supprimée!' }))
           .catch(error => res.status(400).json({ error }));
       });
@@ -57,7 +57,6 @@ exports.deleteSauce = (req, res, next) => {
 };
 
 exports.getAllSauces = (req, res, next) => {
-  console.log(req)
   Sauce.find().then(
     (sauces) => {
       res.status(200).json(sauces);
