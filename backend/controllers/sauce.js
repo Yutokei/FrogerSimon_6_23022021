@@ -5,12 +5,9 @@ const fs = require('fs');
 //Création d'une sauce
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
-  delete sauceObject._id;
   const sauce = new Sauce({
       ...sauceObject,
-      imageURL: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-      likes: 0,
-      dislikes: 0
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   });
   sauce.save()
   .then(() => {res.status(201).json({ message: 'Vous avez envoyé la sauce!' })})
@@ -47,18 +44,20 @@ exports.modifySauce = (req, res, next) => {
 
 //Supprimer une sauce
 exports.deleteSauce = (req, res, next) => {
-  Sauce.findOne({ _id: req.params.id })
+  Sauces.findOne({ _id: req.params.id })
     .then(sauce => {
-      const filename = sauce.imageURL.split('/images/')[1];
+      const filename = sauce.imageUrl.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {
-        Sauce.deleteOne({_id: req.params.id})
-          .then(() => {res.status(200).json({message: 'Sauce supprimé !'})})
-          .catch((error) => {res.status(400).json({ error: error})})})
+        Sauces.deleteOne({ _id: req.params.id })
+          .then(() => res.status(200).json({ message: 'Sauce supprimée!' }))
+          .catch(error => res.status(400).json({ error }));
+      });
     })
-    .catch(error => res.status(500).json({ error }))
+    .catch(error => res.status(500).json({ error }));
 };
 
 exports.getAllSauces = (req, res, next) => {
+  console.log(req)
   Sauce.find().then(
     (sauces) => {
       res.status(200).json(sauces);
@@ -66,7 +65,7 @@ exports.getAllSauces = (req, res, next) => {
   ).catch(
     (error) => {
       res.status(400).json({
-        error: error
+        message: error
       });
     }
   );

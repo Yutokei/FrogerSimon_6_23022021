@@ -1,8 +1,10 @@
 const express = require('express')
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 const path = require('path');
 const helmet =require('helmet')
+
+require('dotenv').config()
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
@@ -11,9 +13,10 @@ const Sauce = require('./models/Sauce');
 
 const app = express();
 
-mongoose.connect('mongodb+srv://SimonF:x7HhcuM2fT5oFLGA@clustersopekocko.nh6ea.mongodb.net/ClusterSoPekocko?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGO_SERVER,
   { useNewUrlParser: true,
-    useUnifiedTopology: true })
+    useUnifiedTopology: true,
+    useCreateIndex : true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
@@ -26,10 +29,12 @@ app.use((req, res, next) => {
 
   app.use(helmet());
 
-  app.use(bodyParser.json());
+  app.use(bodyParser.json())
 
   app.use('/images', express.static(path.join(__dirname, 'images')));
   app.use('/api/sauces', sauceRoutes);
   app.use('/api/auth', userRoutes);
+
+  app.use(express.urlencoded({extended: true}));
 
   module.exports = app
