@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const jwtUtils = require('../utils/jwt.utils');
 const cryptoJs = require('crypto-js')
 require('dotenv').config
 
@@ -37,11 +37,7 @@ exports.login = (req, res, next) => {
             }
             res.status(200).json({
                 userId: user._id,
-                token: jwt.sign(
-                    { userId: user._id },
-                    'RANDOM_TOKEN_SECRET',
-                    { expiresIn: '24h'}
-                )
+                token: jwtUtils.generateToken(user._id)
             })
         })
         .catch(error => res.status(500).json({ error }))
