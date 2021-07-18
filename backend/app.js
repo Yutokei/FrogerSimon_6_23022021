@@ -4,6 +4,16 @@ const mongoose = require('mongoose');
 const path = require('path');
 const helmet =require('helmet')
 
+//Modules permettant de limiter le nombre de requêtes au serveur
+const rateLimit = require("express-rate-limit");
+const limiter = rateLimit({
+  //Fenêtre d'une heure
+  windowMs: 60 * 60 * 1000,
+  //Requête maximum de mille.
+  max: 2000,
+  message: "Vous avez passez trop de temps dans la sauce, revenez dans une heure"
+});
+
 require('dotenv').config()
 
 const sauceRoutes = require('./routes/sauce');
@@ -29,11 +39,15 @@ app.use((req, res, next) => {
 
   app.use(helmet());
 
+ 
+
   app.use(bodyParser.json())
 
   app.use('/images', express.static(path.join(__dirname, 'images')));
   app.use('/api/sauces', sauceRoutes);
   app.use('/api/auth', userRoutes);
+
+  app.use(limiter)
 
   app.use(express.urlencoded({extended: true}));
 

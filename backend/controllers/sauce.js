@@ -4,11 +4,14 @@ const fs = require('fs');
 
 //Création d'une sauce
 exports.createSauce = (req, res, next) => {
+  //On récupère le body de la requête
   const sauceObject = JSON.parse(req.body.sauce);
+  //On injecte le body dans notre schéma de sauce
   const sauce = new Sauce({
       ...sauceObject,
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   });
+  //On sauvegarde la nouvelle sauce
   sauce.save()
   .then(() => {res.status(201).json({ message: 'Vous avez envoyé la sauce!' })})
   .catch((error) => {res.status(400).json({ error: error })});
@@ -17,9 +20,9 @@ exports.createSauce = (req, res, next) => {
 //Modification d'une sauce
 exports.modifySauce = (req, res, next) => {
   if (req.file) {
-    // si l'image est modifiée, on supprime l'image actuel
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
+            // si l'image est modifiée, on supprime l'image actuel
             const filename = sauce.imageUrl.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {
                 // une fois que l'ancienne image est supprimée dans le dossier /image, on peut mettre à jour le reste
