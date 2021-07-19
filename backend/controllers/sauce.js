@@ -59,6 +59,7 @@ exports.deleteSauce = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
+//Affiche toutes les sauces
 exports.getAllSauces = (req, res, next) => {
   Sauce.find().then(
     (sauces) => {

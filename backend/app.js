@@ -11,7 +11,7 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   //Requête maximum de mille.
   max: 2000,
-  message: "Vous avez passez trop de temps dans la sauce, revenez dans une heure"
+  message: "Vous avez passez trop de temps dans la sauce, revenez dans une heure !"
 });
 
 require('dotenv').config()
@@ -23,6 +23,7 @@ const Sauce = require('./models/Sauce');
 
 const app = express();
 
+//Connection au serveur Mongo DB
 mongoose.connect(process.env.MONGO_SERVER,
   { useNewUrlParser: true,
     useUnifiedTopology: true,

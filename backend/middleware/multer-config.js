@@ -1,5 +1,6 @@
 const multer = require('multer');
 
+//Taille maximale des images uploader 1MB
 const maxSize = 1* 1024 * 10;
 
 const MIME_TYPES = {
