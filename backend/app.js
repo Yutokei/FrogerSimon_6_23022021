@@ -1,20 +1,22 @@
-const express = require('express')
-const bodyParser = require('body-parser')
+const express = require('express');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-const helmet =require('helmet')
+const helmet =require('helmet');
+const cors = require('cors');
+require('dotenv').config
 
 //Modules permettant de limiter le nombre de requêtes au serveur
 const rateLimit = require("express-rate-limit");
 const limiter = rateLimit({
   //Fenêtre d'une heure
   windowMs: 60 * 60 * 1000,
-  //Requête maximum de mille.
+  //Requête maximum de deux-mille.
   max: 2000,
   message: "Vous avez passez trop de temps dans la sauce, revenez dans une heure !"
 });
 
-require('dotenv').config()
+require('dotenv').config();
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
@@ -37,6 +39,12 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
   });
+
+  app.use(
+    cors({
+      origin: process.env.CORS_ORIGIN
+    })
+  )
 
   app.use(helmet());
 
