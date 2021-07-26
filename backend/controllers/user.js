@@ -6,8 +6,10 @@ require('dotenv').config
 const User = require('../models/User');
 
 exports.signup = (req, res, next) => {
-  
-  const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+/*
+//Regex Email
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 if (!EMAIL_REGEX.test(req.body.email)){
     return res.status(400)({ error: 'email non valide'})
 }
@@ -15,8 +17,9 @@ if (!EMAIL_REGEX.test(req.body.email)){
 //Mot de passe entre 4 et 8 charatères, il doit contenir au moins un chiffre
 const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
 if (!PASSWORD_REGEX.test(req.body.password)){
-    return res.status(400)({ error: 'Mot de passe non valide: il doit contenir entre 4 et 8 charactères et au moins un chiffre'})
+    return res.status(400)({ error:'Mot de passe non valide: il doit contenir entre 4 et 8 charactères et au moins un chiffre'})
 }
+*/
 
     bcrypt
       .hash(req.body.password, 10)
@@ -25,7 +28,6 @@ if (!PASSWORD_REGEX.test(req.body.password)){
           email: cryptoJs.HmacSHA256(req.body.email, process.env.CRYPTO_KEY).toString(),
           password: hash,
         });
-        console.log(user)
         user
           .save()
           .then(() => {res.status(201).json({ message: "Vous êtes enregistré !" });})

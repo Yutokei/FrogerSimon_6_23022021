@@ -40,6 +40,7 @@ app.use((req, res, next) => {
 
   app.use(
     cors({
+      //On autorise uniquement les requêtes du frontend
       origin: process.env.CORS_ORIGIN
     })
   )
