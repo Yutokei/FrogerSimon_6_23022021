@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const helmet =require('helmet');
 const cors = require('cors');
-require('dotenv').config
+require('dotenv').config();
 
 //Modules permettant de limiter le nombre de requêtes au serveur
 const rateLimit = require("express-rate-limit");
@@ -15,8 +15,6 @@ const limiter = rateLimit({
   max: 2000,
   message: "Vous avez passez trop de temps dans la sauce, revenez dans une heure !"
 });
-
-require('dotenv').config();
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');

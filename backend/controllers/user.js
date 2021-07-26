@@ -28,9 +28,7 @@ if (!PASSWORD_REGEX.test(req.body.password)){
         console.log(user)
         user
           .save()
-          .then(() => {
-            res.status(201).json({ message: "User created !" });
-          })
+          .then(() => {res.status(201).json({ message: "Vous êtes enregistré !" });})
           .catch((error) => res.status(400).json({ error }));
       })
       .catch((error) => res.status(500).json({ error }));
